@@ -1,35 +1,151 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>GSCG Content Suite</title>
-<link rel="icon" href="logo.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<style>@font-face { font-family: "Graduate"; src: url("font/graduate.woff2") format("woff2"); } @font-face { font-family: "Big Shoulders Display"; src: url("font/bs.woff2") format("woff2"); font-weight: 800; }</style>
-<link rel="stylesheet" href="style.css" />
-</head>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gonzaga Sport Consulting Group</title>
+<meta name="description" content="Shaping future Zag business leaders through experiential learning and industry engagement in sports.">
+<meta property="og:title" content="Gonzaga Sport Consulting Group"><meta property="og:description" content="Shaping future Zag business leaders through experiential learning and industry engagement in sports."><meta property="og:image" content="assets/seattle-cover.jpg">
+<link rel="icon" href="assets/logo-red.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#14213D;--red:#E4002B;--cream:#F5F3EE;--gu:#B4BECA;--ink:#14213D;--line:rgba(20,33,61,.14)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font:400 17px/1.6 "Barlow",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+h1,h2,h3,.cond{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:800;text-transform:uppercase;line-height:.95;letter-spacing:.005em}
+.rule{width:56px;height:5px;background:var(--red);margin-bottom:18px}
+.red{color:var(--red)}
+.eyebrow{font:600 13px/1 "Barlow",sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:14px}
+.btn{display:inline-block;font:700 15px/1 "Barlow",sans-serif;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:16px 22px;border:2px solid var(--red);background:var(--red);color:#fff;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;border-color:rgba(255,255,255,.7);color:#fff}
+.btn.navy{background:var(--navy);border-color:var(--navy)}
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff}
+nav .wrap{display:flex;align-items:center;gap:22px;height:64px}
+nav img{height:36px}
+nav .links{display:flex;gap:22px;margin-left:auto;font:600 14px/1 "Barlow",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+nav .links a{text-decoration:none;opacity:.85}
+nav .links a:hover{opacity:1}
+nav .links a.suite{border:1.5px solid rgba(255,255,255,.5);padding:8px 12px}
+/* hero */
+.hero{position:relative;background:var(--navy);color:#fff;overflow:hidden}
+.hero .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.38}
+.hero .shade{position:absolute;inset:0;background:linear-gradient(90deg,var(--navy) 18%,rgba(20,33,61,.55) 60%,rgba(20,33,61,.2))}
+.hero .wrap{position:relative;padding:120px 24px 110px}
+.hero h1{font-size:clamp(44px,8vw,108px);max-width:1100px}
+.hero p.lead{font-size:20px;max-width:560px;margin:26px 0 34px;color:rgba(255,255,255,.88)}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+/* stats */
+.stats{background:#fff;border-bottom:1px solid var(--line)}
+.stats .wrap{display:grid;grid-template-columns:repeat(5,1fr)}
+.stat{padding:30px 10px;border-left:1px solid var(--line)}
+.stat:first-child{border-left:0}
+.stat b{display:block;font:800 52px/1 "Barlow Condensed",sans-serif;color:var(--navy)}
+.stat span{font-size:14px;color:#55607a}
+section{padding:96px 0}
+section h2{font-size:clamp(40px,5.5vw,68px);margin-bottom:22px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.photo{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px}
+.step{background:#fff;padding:24px 22px;border-top:4px solid var(--red)}
+.step .n{font:800 15px/1 "Barlow Condensed",sans-serif;color:var(--red);letter-spacing:.12em}
+.step h3{font-size:28px;margin:10px 0 8px}
+.step p{font-size:15.5px;color:#3c4763}
+/* audiences */
+.navyband{background:var(--navy);color:#fff}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);padding:28px 26px;display:flex;flex-direction:column}
+.card h3{font-size:34px;margin-bottom:12px}
+.card p{color:rgba(255,255,255,.84);font-size:16px;flex:1}
+.card ul{list-style:none;margin:16px 0 20px}
+.card li{padding:7px 0 7px 18px;position:relative;font-size:15px;color:rgba(255,255,255,.9);border-top:1px solid rgba(255,255,255,.1)}
+.card li:before{content:"";position:absolute;left:0;top:15px;width:7px;height:7px;background:var(--red)}
+.card a.more{font:700 14px/1 "Barlow",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-decoration:none;border-bottom:2px solid var(--red);align-self:flex-start;padding-bottom:4px}
+/* work */
+.film{display:grid;grid-template-columns:380px 1fr;gap:56px;align-items:center}
+.film video{width:100%;aspect-ratio:9/16;background:#000;display:block;box-shadow:0 20px 50px rgba(20,33,61,.25)}
+.trip{margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+.trip h3{font-size:26px;margin-bottom:6px}
+.season{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+.season div{background:#fff;padding:18px 20px}
+.season b{font:800 22px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;display:block;margin-bottom:6px}
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:56px}
+.gallery img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+/* clients */
+.clients{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
+.clients span{background:#fff;border:1px solid var(--line);padding:10px 14px;font:700 16px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.04em}
+.leagues{margin-top:22px;color:#55607a;font-size:15px}
+/* cta */
+.cta{background:var(--red);color:#fff;text-align:center}
+.cta h2{font-size:clamp(40px,6vw,76px)}
+.cta p{max-width:620px;margin:0 auto 30px;font-size:19px}
+.cta .btn{background:#fff;color:var(--red);border-color:#fff}
+.cta .btn.ghost{background:transparent;color:#fff}
+footer{background:var(--navy);color:rgba(255,255,255,.75);padding:44px 0;font-size:14px}
+footer .wrap{display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+footer img{height:44px}
+footer .f{display:flex;gap:18px;margin-left:auto;flex-wrap:wrap}
+footer a{text-decoration:none}footer a:hover{color:#fff}
+@media(max-width:900px){br.d{display:none}nav .links a:not(.suite){display:none}.stats .wrap{grid-template-columns:repeat(2,1fr)}.stat{border-left:0;border-top:1px solid var(--line)}
+.two,.film{grid-template-columns:1fr}.steps,.cards{grid-template-columns:1fr}.season{grid-template-columns:1fr}.gallery{grid-template-columns:repeat(2,1fr)}
+.film video{max-width:360px;margin:0 auto}section{padding:70px 0}.hero .wrap{padding:84px 24px 76px}footer .f{margin-left:0}}
+</style></head>
 <body>
-<header class="topbar">
-  <div class="in">
-    <span class="badge">GSCG</span>
-    <a class="brandname" href="#/">Gonzaga Sport Consulting Group</a>
-    <nav class="nav">
-      <a href="#/" data-nav="home">Home</a>
-      <a href="#/projects" data-nav="projects">Projects</a>
-      <a href="#/calendar" data-nav="calendar">Calendar</a>
-      <a href="#/messaging" data-nav="messaging">Messaging</a>
-      <a href="#/library" data-nav="library">Library</a>
-      <a href="#/playbook" data-nav="playbook">Playbook</a>
-      <a href="#/insights" data-nav="insights">What it's learned</a>
-      <span class="pilltag">CONTENT SUITE</span>
-      <a class="me" href="#/settings" data-nav="settings" title="Settings">MS</a>
-    </nav>
-  </div>
+<nav><div class="wrap"><a href="#top"><img src="assets/logo-white.png" alt="GSCG"></a><div class="links"><a href="#how">How it works</a><a href="#teams">For teams</a><a href="#students">For students</a><a href="#work">The work</a><a href="#clients">Clients</a><a class="suite" href="suite/">Content Suite</a></div></div></nav>
+
+<header class="hero" id="top"><img class="bg" src="assets/photo-1.jpg" style="object-position:55% 56%" alt="">
+  <div class="shade"></div>
+  <div class="wrap"><p class="eyebrow">Gonzaga Sport Consulting Group</p><div class="rule"></div>
+    <h1>Shaping future Zag<br class="d"> business leaders<br> <span class="red">through sports.</span></h1>
+    <p class="lead">Shaping future Zag business leaders through experiential learning and industry engagement in sports.</p>
+    <div class="ctas"><a class="btn" href="mailto:gscg@gonzaga.edu">Partner with us</a><a class="btn ghost" href="#students">Join GSCG</a></div></div>
 </header>
-<main id="app"><p class="muted">Loading…</p></main>
-<script src="demo-shim.js"></script><script type="module" src="app.js"></script>
-</body>
-</html>
+
+<div class="stats"><div class="wrap"><div class="stat"><b>2021</b><span>Founded in Spokane</span></div><div class="stat"><b>26</b><span>Clients served</span></div><div class="stat"><b>11</b><span>Leagues and tours</span></div><div class="stat"><b>5</b><span>Students per team</span></div><div class="stat"><b>8</b><span>Weeks per engagement</span></div></div></div>
+
+<section id="how"><div class="wrap">
+  <p class="eyebrow">How it works</p><div class="rule"></div><h2>Real work for<br><span class="red">real sports organizations</span></h2>
+  <p style="max-width:680px">Pro bono, faculty-supported student teams. Work across the NFL, NBA, MLB, WNBA, NHL, MLS, NCAA, NWSL, MiLB, WHL and PGA Tour.</p>
+  <div class="steps">
+    <div class="step"><span class="n">01</span><h3>The brief</h3><p>A sports organization brings a real business question to GSCG.</p></div>
+    <div class="step"><span class="n">02</span><h3>The team</h3><p>Five-person teams on 8-week engagements.</p></div>
+    <div class="step"><span class="n">03</span><h3>The support</h3><p>Faculty guidance plus an advisory council of industry professionals, chaired by founder Mateo Valdez (&#39;23).</p></div>
+    <div class="step"><span class="n">04</span><h3>The growth</h3><p>Members grow from consultant to Project Manager.</p></div>
+  </div>
+</div></section>
+
+<section class="navyband" id="teams"><div class="wrap">
+  <p class="eyebrow">Who it's for</p><div class="rule"></div><h2>What everyone<br><span class="red">gets out of it</span></h2>
+  <div class="cards">
+    <div class="card"><h3>Teams &amp; sports organizations</h3><p>Useful research and fresh ideas from a fan&#39;s and student&#39;s point of view, at no cost.</p><ul><li>Pro bono, faculty-supported student teams.</li><li>Five-person teams on 8-week engagements.</li><li>The Portland team evaluated the Moda Center ticket-buyer experience and the partnership value of sponsored ticket packages.</li></ul><a class="more" href="mailto:gscg@gonzaga.edu">Bring us a project</a></div>
+    <div class="card" id="students"><h3>Prospective students</h3><p>Real experience in sports business from year one, and a reason to pick Gonzaga.</p><ul><li>Members grow from consultant to Project Manager.</li><li>Portland trip: Nike World HQ with Zag alumni, consulting for the Trail Blazers on B2B strategy, presenting at the Moda Center.</li><li>GSCG is a premier program that develops future Zag leaders through sports, where ambition meets opportunity.</li></ul><a class="more" href="https://www.instagram.com/gonzagasportconsulting">See what we're up to</a></div>
+    <div class="card"><h3>Parents &amp; families</h3><p>Career readiness, faculty support, and real outcomes for their student.</p><ul><li>An advisory council of industry professionals, chaired by founder Mateo Valdez (&#39;23).</li><li>Founded in 2021 in Spokane, WA.</li><li>Former clients include NFL, NBA, MLB and NHL organizations.</li></ul><a class="more" href="https://gu-27.github.io/gscg-spring-2026">Read the newsletter</a></div>
+  </div>
+</div></section>
+
+<section id="work"><div class="wrap">
+  <div class="film"><video controls playsinline preload="metadata" poster="assets/seattle-cover.jpg" src="assets/seattle-day.mp4"></video>
+    <div><p class="eyebrow">The work</p><div class="rule"></div><h2>A day with<br><span class="red">GSCG</span></h2>
+      <p>Seattle, April 21, 2026: a day with the Mariners and Seahawks, from a suite tour at Lumen Field to batting practice at T-Mobile Park.</p>
+      <div class="trip"><h3>Portland</h3><p>Portland trip: Nike World HQ with Zag alumni, consulting for the Trail Blazers on B2B strategy, presenting at the Moda Center. The Portland team evaluated the Moda Center ticket-buyer experience and the partnership value of sponsored ticket packages.</p></div>
+      <div class="season"><div><b>Spring 2026</b>Seattle Mariners, Portland Trail Blazers, Spokane Zephyr.</div><div><b>Fall 2026</b>Minnesota Vikings, Chicago Sky, Houston Astros, Gonzaga Athletics.</div></div>
+    </div></div>
+  <div class="gallery"><img src="assets/photo-2.jpg" style="object-position:43% 54%" alt="GSCG in Seattle" loading="lazy"><img src="assets/photo-3.jpg" style="object-position:49% 41%" alt="GSCG in Seattle" loading="lazy"><img src="assets/photo-4.jpg" style="object-position:45% 41%" alt="GSCG in Seattle" loading="lazy"><img src="assets/photo-5.jpg" style="object-position:10% 50%" alt="GSCG in Seattle" loading="lazy"></div>
+</div></section>
+
+<section id="clients" style="background:#fff"><div class="wrap">
+  <p class="eyebrow">Clients</p><div class="rule"></div><h2>Trusted by<br><span class="red">26 clients</span></h2>
+  <div class="clients"><span>Portland Trail Blazers</span><span>Arizona Diamondbacks</span><span>Climate Pledge Arena</span><span>Seattle Seahawks</span><span>New Balance</span><span>Detroit Lions</span><span>San Diego Wave</span><span>LA Clippers</span><span>Kroenke Sports &amp; Entertainment</span><span>Spokane Hoopfest</span><span>Seattle Kraken</span><span>SF Giants</span><span>Seattle Sounders FC</span><span>Truist Bank</span><span>Minnesota United</span><span>Portland Timbers</span><span>Gonzaga Athletics</span><span>LA Kings</span><span>Charlotte Knights</span><span>Toronto Blue Jays</span><span>Spokane Chiefs</span><span>Seattle Mariners</span><span>Spokane Zephyr</span><span>Minnesota Vikings</span><span>Chicago Sky</span><span>Houston Astros</span></div>
+  <p class="leagues">Work across the NFL, NBA, MLB, WNBA, NHL, MLS, NCAA, NWSL, MiLB, WHL and PGA Tour.</p>
+</div></section>
+
+<section class="cta"><div class="wrap"><h2>Let's work together</h2>
+  <p>Sports organizations: bring us a question. Students: come build your career in sports business at Gonzaga.</p>
+  <a class="btn" href="mailto:gscg@gonzaga.edu">gscg@gonzaga.edu</a> <a class="btn ghost" href="https://gscglinks.pages.dev">All links</a></div></section>
+
+<footer><div class="wrap"><img src="assets/logo-white.png" alt="GSCG"><span>Shaping future Zag business leaders through sports.<br>Gonzaga University · Spokane, WA</span>
+  <div class="f"><a href="https://www.instagram.com/gonzagasportconsulting">Instagram</a><a href="https://www.linkedin.com/company/gonzaga-sport-consulting-group">LinkedIn</a><a href="https://gscglinks.pages.dev">Links</a><a href="mailto:gscg@gonzaga.edu">Email</a><a href="suite/">Content Suite</a></div></div></footer>
+</body></html>
