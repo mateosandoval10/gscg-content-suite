@@ -137,7 +137,7 @@ async function home() {
   };
   $("#start").onclick = async () => {
     if (!$("#req").value.trim()) return toast("Describe what you're making, or drop footage in the box");
-    const p = await create(); location.hash = `#/p/${p.id}/footage`;
+    const p = await create(); location.hash = `#/p/${p.id}/${p.template ? "template" : "footage"}`;
   };
   // Drop footage straight onto the request box: creates the project, uploads, starts analysis.
   const card = $("#startcard");
@@ -225,8 +225,10 @@ const STEPS = [
   ["footage", "Footage"], ["brief", "What we're making"], ["questions", "Questions"], ["build", "Build"], ["review", "Review"], ["post", "Post"],
 ];
 const STILL_STEPS = [["footage", "Photos"], ["brief", "What we're making"], ["design", "Design"], ["review", "Review"], ["post", "Post"]];
-const stepsFor = (p) => (isStill(p) ? STILL_STEPS : STEPS);
+const TEMPLATE_STEPS = [["template", "What we're making"], ["review", "Review"], ["post", "Post"]];
+const stepsFor = (p) => (p.template ? TEMPLATE_STEPS : isStill(p) ? STILL_STEPS : STEPS);
 function stepIndex(p) {
+  if (p.template) return p.status === "scheduled" || p.status === "posted" || p.outputs.some((o) => o.status === "approved") ? 2 : p.outputs.some((o) => o.status !== "replaced") ? 1 : 0;
   if (isStill(p)) {
     if (p.status === "scheduled" || p.status === "posted" || p.outputs.some((o) => o.status === "approved")) return 4;
     if (p.outputs.some((o) => o.status !== "replaced")) return 3;
@@ -254,13 +256,13 @@ async function projectPage(id, step) {
       <label class="small muted">Owner <select id="own" style="width:auto;margin-left:6px">${["", ...p.team.map((m) => m.id)].map((tid) => `<option value="${tid}" ${p.owner === tid || (!p.owner && !tid) ? "selected" : ""}>${tid ? esc(p.team.find((m) => m.id === tid).name) : "—"}</option>`).join("")}</select></label>
       <a class="btn ghost sm" href="#/">← Home</a></div>
     ${p.request ? `<div class="req">“${esc(p.request)}”</div>` : ""}
-    <div class="steps ${S.length === 5 ? "s5" : ""}" style="margin-top:18px">${S.map(([k, t], i) => `
+    <div class="steps ${S.length === 5 ? "s5" : S.length === 3 ? "s3" : ""}" style="margin-top:18px">${S.map(([k, t], i) => `
       <a class="step ${k === cur ? "on" : i <= reached ? "done" : ""}" href="#/p/${p.id}/${k}"><div class="n">Step ${i + 1}</div><div class="t">${i < reached && k !== cur ? "✓ " : ""}${t}</div></a>`).join("")}</div>
     <div id="jobs"></div><div id="body"></div>`;
   app.innerHTML = head;
   $("#own").onchange = async () => { await api(`projects/${p.id}/update`, { method: "POST", body: { owner: $("#own").value || null } }); toast("Owner saved"); };
   const body = $("#body");
-  ({ footage: stepFootage, brief: stepBrief, questions: stepQuestions, ideas: stepQuestions, music: stepMusic, build: stepBuild, design: stepDesign, review: isStill(p) ? stepReviewStills : stepReview, post: stepPost }[cur] || stepFootage)(p, body);
+  ({ template: stepTemplate, footage: stepFootage, brief: stepBrief, questions: stepQuestions, ideas: stepQuestions, music: stepMusic, build: stepBuild, design: stepDesign, review: isStill(p) ? stepReviewStills : stepReview, post: stepPost }[cur] || stepFootage)(p, body);
   watchJobs(p.id);
 }
 
@@ -283,6 +285,30 @@ function watchJobs(pid) {
   watchJobs.seen = null;
   paint();
   poll = setInterval(paint, 1500);
+}
+
+// Series template (e.g. Who is GSCG?): recognized from the request; builds from GSCG's own assets, no footage needed.
+function stepTemplate(p, body) {
+  const T = p.templateInfo;
+  if (!T) { body.innerHTML = `<div class="card plain empty">This project isn't a series template. <a href="#/p/${p.id}/footage">Go to footage →</a></div>`; return; }
+  const cur = T.parts.find((x) => x.id === p.template.part) || T.parts[0];
+  const busy = p.jobs.some((j) => j.status === "running" || j.status === "queued");
+  body.innerHTML = `
+  <div class="card">
+    <p class="eyebrow dot">Step 1 · What we're making</p>
+    <h2 class="red" style="margin:0 0 4px">${esc(T.name)}</h2>
+    <p class="small muted" style="margin:0 0 14px">Recognized from your request. ${esc(T.about)}</p>
+    <label class="f small">Which part of the series?</label>
+    <div class="tparts">${T.parts.map((x) => `<button class="tpart ${x.id === cur.id ? "on" : ""}" data-part="${x.id}"><b>${esc(x.label)}</b><span class="small muted">${esc(x.detail)}</span></button>`).join("")}</div>
+    <div class="row" style="margin-top:16px;gap:10px">
+      <button class="btn red" id="tbuild" ${busy ? "disabled" : ""}>${busy ? "Building…" : `Build “${esc(cur.label)}” →`}</button>
+      <span class="small muted">Vertical 1080×1920 for Reels / Shorts · brand fonts, colors and the GSCG outro are locked in · takes about a minute.</span>
+      <span class="spacer"></span><a href="#" class="small" id="tclear">Not this? Use footage instead</a>
+    </div>
+  </div>`;
+  $$("[data-part]").forEach((b) => (b.onclick = async () => { await api(`projects/${p.id}/template`, { method: "POST", body: { part: b.dataset.part } }); route(); }));
+  $("#tbuild").onclick = async () => { await api(`projects/${p.id}/template`, { method: "POST", body: { part: cur.id, build: true } }); toast("Building — it lands in Review when done"); route(); };
+  $("#tclear").onclick = async (e) => { e.preventDefault(); await api(`projects/${p.id}/template`, { method: "POST", body: { clear: true } }); location.hash = `#/p/${p.id}/footage`; };
 }
 
 // Step 1 — footage
@@ -700,7 +726,7 @@ function stepReview(p, body) {
   const plat = (k) => B.platforms[k]?.short || k;
   body.innerHTML = `
   <div class="card">
-    <p class="eyebrow dot">Step 5 · Review</p>
+    <p class="eyebrow dot">Step ${p.template ? 2 : 5} · Review</p>
     <div class="row"><h2 class="red" style="margin:0">Your videos</h2><span class="spacer"></span>
       <button class="btn ghost sm" id="again">Render again</button></div>
     <p class="small muted">Approve what you'd post, or open the timeline and click shots to cut them. Every decision trains the system.</p>
@@ -726,7 +752,7 @@ function stepReview(p, body) {
         <div class="row" style="margin-top:10px">
           <button class="btn red sm" data-approve="${o.id}">Approve</button>
           <button class="btn ghost sm" data-reject="${o.id}">Reject</button>
-          <button class="btn ghost sm" data-sb="${o.id}">Timeline</button>
+          ${o.template ? "" : `<button class="btn ghost sm" data-sb="${o.id}">Timeline</button>`}
         </div>
         <div data-sbbox="${o.id}"></div>
         ${o.status === "approved" ? `<details style="margin-top:12px"><summary class="small"><b>Log results after posting</b></summary>
@@ -735,7 +761,7 @@ function stepReview(p, body) {
           <button class="btn ghost sm" data-logperf="${o.id}" style="margin-top:8px">Save results</button></details>` : ""}
       </div>
     </div>`).join("")}</div>` : `<div class="card plain empty">Videos appear here as they finish rendering (about 1–2 minutes each).</div>`}`;
-  $("#again").onclick = async () => { await api(`projects/${p.id}/render`, { method: "POST" }); toast("Queued"); };
+  $("#again").onclick = async () => { if (p.template) { location.hash = `#/p/${p.id}/template`; return; } await api(`projects/${p.id}/render`, { method: "POST" }); toast("Queued"); };
   $$("[data-copy]").forEach((b) => (b.onclick = () => { const o = p.outputs.find((x) => x.id === b.dataset.copy); navigator.clipboard.writeText(`${o.idea?.caption || ""}\n\n${(o.idea?.hashtags || []).join(" ")}`); toast("Caption copied"); }));
   $$("[data-reveal]").forEach((b) => (b.onclick = () => api("reveal", { method: "POST", body: { file: b.dataset.reveal } })));
   const rating = {};
