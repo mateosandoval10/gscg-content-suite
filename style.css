@@ -384,3 +384,9 @@ ul.look { margin: 6px 0 0 18px; } ul.look li { margin: 4px 0; }
 .exb { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
 .chipsrow { display: flex; flex-wrap: wrap; gap: 4px; }
 @media (max-width: 1000px) { .mtiles { grid-template-columns: repeat(2, 1fr); } }
+
+/* Library: play videos in place */
+.lc[data-play] { cursor: pointer; }
+.lc .playbtn { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 64px; height: 64px; border-radius: 50%; background: rgba(228, 0, 43, .92); color: #fff; display: grid; place-items: center; font-size: 24px; padding-left: 4px; box-shadow: 0 6px 18px rgba(20, 33, 61, .35); transition: transform .15s; }
+.lc[data-play]:hover .playbtn { transform: translate(-50%, -50%) scale(1.08); }
+.lc video { width: 100%; height: 100%; object-fit: contain; background: #000; display: block; }

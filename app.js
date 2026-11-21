@@ -963,13 +963,19 @@ async function libraryPage(filter = {}) {
   <div class="row" style="margin:0 0 6px;gap:4px"><span class="small muted" style="margin-right:6px">Audience</span><button class="chip ${!filter.audience ? "on" : ""}" data-lf="audience|">All</button>${M.audiences.map((x) => `<button class="chip ${filter.audience === x.id ? "on" : ""}" data-lf="audience|${x.id}">${esc(x.name)}</button>`).join("")}</div>
   <div class="row" style="margin:0 0 16px;gap:4px"><span class="small muted" style="margin-right:6px">Status</span>${[["", "All"], ["approved", "Approved"], ["review", "In review"], ["rejected", "Rejected"]].map(([k, l]) => `<button class="chip ${(filter.status || "") === k ? "on" : ""}" data-lf="status|${k}">${l}</button>`).join("")}</div>
   <div class="card plain"><p class="eyebrow">Finished pieces · ${items.length}</p>
-    ${items.length ? `<div class="lib">${items.map((i) => `<a class="li" href="#/p/${i.project}/review"><div class="lc">${i.cover ? `<img src="${media(i.cover)}">` : ""}<span class="tag light">${esc(platName(i.platform))} · ${i.frames ? `${i.frames} frame${i.frames > 1 ? "s" : ""}` : `${i.duration}s`}</span></div>
+    ${items.length ? `<div class="lib">${items.map((i) => `<a class="li" href="#/p/${i.project}/review"><div class="lc" ${!i.frames && i.file ? `data-play="${esc(i.file)}" title="Play here"` : ""}>${i.cover ? `<img src="${media(i.cover)}">` : ""}${!i.frames && i.file ? `<span class="playbtn" aria-hidden="true">&#9654;</span>` : ""}<span class="tag light">${esc(platName(i.platform))} · ${i.frames ? `${i.frames} frame${i.frames > 1 ? "s" : ""}` : `${i.duration}s`}</span></div>
       <b>${esc(i.title || i.projectName)}</b><div class="small muted">${esc(B.recipes.find((r) => r.id === i.recipe)?.name || i.recipe)}${i.client ? ` · ${esc(i.client)}` : ""}</div>
       <div class="row" style="gap:6px;margin-top:4px"><span class="status ${i.status}">${esc(i.posted ? i.posted.status : i.status)}</span><span class="dots">${pdots(i.pillars)}</span></div></a>`).join("")}</div>` : `<div class="empty">Nothing matches.</div>`}</div>
   <div class="card plain"><p class="eyebrow">Footage</p>
     ${L.clips.length ? L.clips.map((c) => `<div class="fr"><div class="faces sq">${c.thumbs.map((k) => `<img src="thumb/${k}">`).join("")}</div><div style="flex:1"><a href="#/p/${c.project}/footage"><b>${esc(c.projectName)}</b></a>
       <div class="small muted">${c.count} clips · people in ${c.people} · speech in ${c.speech}${c.places.length ? ` · ${c.places.map(esc).join(", ")}` : ""}${c.client ? ` · ${esc(c.client)}` : ""}</div></div><span class="dots">${pdots(c.pillars)}</span></div>`).join("") : `<p class="muted">No footage yet.</p>`}</div>`;
   $$("[data-lf]").forEach((b) => (b.onclick = () => { const [k, v] = b.dataset.lf.split("|"); libraryPage({ ...filter, [k]: v || undefined }); }));
+  // Video cards play right in the Library; the title below still opens the project.
+  $$("[data-play]").forEach((el) => (el.onclick = (e) => {
+    e.preventDefault(); e.stopPropagation();
+    if (el.querySelector("video")) return;
+    el.innerHTML = `<video src="${media(el.dataset.play)}" controls autoplay playsinline preload="auto"></video>`;
+  }));
   $$("[data-gp]").forEach((b) => (b.onclick = () => libraryPage({ ...filter, pillar: b.dataset.gp })));
 }
 
