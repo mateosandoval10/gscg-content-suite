@@ -55,7 +55,7 @@ const audience = (id) => B.messaging.audiences.find((x) => x.id === id);
 const pdots = (ids = []) => ids.map((id) => { const x = pillar(id); return x ? `<i class="pd" style="background:${x.color}" title="${esc(x.name)}"></i>` : ""; }).join("");
 const ptag = (id) => { const x = pillar(id); return x ? `<span class="ptag"><i class="pd" style="background:${x.color}"></i>${esc(x.name)}</span>` : ""; };
 const niceDate = (d) => new Date(d + "T12:00").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
-/** Big Shoulders title card for things without footage yet (second half of the title in red, like the videos). */
+/** Barlow Condensed title card for things without footage yet (second half of the title in red, like the videos). */
 function titleCard(t) {
   const w = String(t).replace(/[?:]/g, (c) => c).split(/\s+/), k = Math.ceil(w.length / 2);
   return `<div class="ph"><span>${esc(w.slice(0, k).join(" "))}</span><span class="r">${esc(w.slice(k).join(" "))}</span></div>`;
@@ -116,7 +116,7 @@ async function home() {
    <div class="col side">
     <div class="card tight"><p class="eyebrow">Brand kit</p><h3 class="serif">Locked on every post</h3>
       <div class="row" style="gap:8px;margin:8px 0 10px"><i class="sw" style="background:${c.primary}"></i><i class="sw" style="background:${c.accent}"></i><i class="sw" style="background:#fff;border:1.5px solid var(--line)"></i><i class="sw" style="background:${c.primary};display:grid;place-items:center"><img src="logo-white.png" style="height:30px"></i>
-        <div style="margin-left:6px"><div class="bs" style="font-size:22px;color:var(--navy)">Big Shoulders</div><div class="small muted">IBM Plex Sans</div></div></div>
+        <div style="margin-left:6px"><div class="bs" style="font-size:22px;color:var(--navy)">Barlow Condensed</div><div class="small muted">Barlow</div></div></div>
       <div class="small"><span class="ok">✓</span>Logo, top right &nbsp;<span class="ok">✓</span>3-part outro &nbsp;<span class="ok">✓</span>GSCG voice</div></div>
     <div class="card tight navy"><div class="row"><p class="eyebrow" style="margin:0">Messaging</p><span class="spacer"></span><span class="pchip ${M.status === "approved" ? "g" : ""}">${M.status === "approved" ? "Approved" : "Draft"}</span></div>
       <h3 class="serif" style="margin-top:4px">${M.status === "approved" ? "What we say, to whom" : M.meeting ? `To decide at the ${ms(M.meeting.date)} meeting` : "What we say, to whom"}</h3>
@@ -496,7 +496,7 @@ function stepBuild(p, body) {
       ${latest.map((o) => `<div class="cut"><div class="phone"><img src="${media(o.cover)}"></div><div class="small"><b>${esc(plat(o.platform))}</b> · ${o.duration}s<br><span class="ok">✓</span>Rendered${o.qc?.issues?.length ? ` · ⚠ ${esc(o.qc.issues[0])}` : ""}</div></div>`).join("")}
       ${running.map((j) => `<div class="cut"><div class="phone ghost"><span>${Math.round(j.progress * 100)}%</span></div><div class="small"><b>${esc(j.label)}</b><br><span style="color:var(--red)">●</span> ${esc(j.message || j.status)}</div></div>`).join("")}
       ${!latest.length && !running.length ? `<p class="muted">Answer the questions, then press Build it.</p>` : ""}
-      <div class="checks"><b class="small">Brand checks · every new render</b>${["Logo, top right", "Navy + red titles", "Big Shoulders + IBM Plex", "Time + place stamps", "Captions on speech", "3-part outro", "Audio −14 LUFS", "Text in safe zones"].map((c) => `<div class="small"><span class="ok">✓</span>${c}</div>`).join("")}</div>
+      <div class="checks"><b class="small">Brand checks · every new render</b>${["Logo, top right", "Navy + red titles", "Barlow Condensed + Barlow", "Time + place stamps", "Captions on speech", "3-part outro", "Audio −14 LUFS", "Text in safe zones"].map((c) => `<div class="small"><span class="ok">✓</span>${c}</div>`).join("")}</div>
     </div>
     ${latest.length ? `<div class="row" style="margin-top:16px"><span class="spacer"></span><a class="btn red" href="#/p/${p.id}/review">Review →</a></div>` : ""}
   </div>`;
